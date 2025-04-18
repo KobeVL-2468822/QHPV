@@ -1,2 +1,4 @@
 # QPTA
-Qlog Priority Terminal Application - Simple application that reads sqlog files in JSON-SEQ v3 format and creates an overview of the streams incl. priority (changes)
+The Qlog Priority Terminal Application (QPTA) is a straightforward tool designed to read sqlog files in the JSON-SEQ v3 format. It provides an overview of the streams, including any changes in priority.
+
+This repository represents just a small portion of my Quic Priority research project.
