@@ -1,0 +1,39 @@
+{"qlog_version":"0.3","qlog_format":"JSON-SEQ","title":"quiche-server qlog","description":"quiche-server qlog id=bfb334cfe1e452a3ebb09052dff601313c44695e","trace":{"vantage_point":{"type":"server"},"title":"quiche-server qlog","description":"quiche-server qlog id=bfb334cfe1e452a3ebb09052dff601313c44695e","configuration":{"time_offset":0.0}}}
+{"time":0.0,"name":"transport:parameters_set","data":{"owner":"local","tls_cipher":"None","original_destination_connection_id":"187ef01e63978f61","disable_active_migration":true,"max_idle_timeout":30000,"max_udp_payload_size":1350,"ack_delay_exponent":3,"max_ack_delay":25,"active_connection_id_limit":2,"initial_max_data":10000000,"initial_max_stream_data_bidi_local":1000000,"initial_max_stream_data_bidi_remote":1000000,"initial_max_stream_data_uni":1000000,"initial_max_streams_bidi":100,"initial_max_streams_uni":100}}
+{"time":0.081375,"name":"transport:packet_received","data":{"header":{"packet_type":"initial","packet_number":3,"version":"1","scil":0,"dcil":20,"scid":"","dcid":"bfb334cfe1e452a3ebb09052dff601313c44695e"},"raw":{"length":1250,"payload_length":1202},"frames":[{"frame_type":"crypto","offset":1077,"length":289},{"frame_type":"crypto","offset":8,"length":55},{"frame_type":"ping"},{"frame_type":"crypto","offset":63,"length":11},{"frame_type":"crypto","offset":3,"length":5},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"crypto","offset":1071,"length":6},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"padding"},{"frame_type":"crypto","offset":0,"length":3},{"frame_type":"padding"},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"crypto","offset":1366,"length":623}]}}
+{"time":0.081375,"name":"recovery:metrics_updated","data":{"smoothed_rtt":333.0,"rtt_variance":166.5,"congestion_window":13500,"ssthresh":18446744073709551615}}
+{"time":2.036242,"name":"transport:packet_sent","data":{"header":{"packet_type":"initial","packet_number":0,"version":"1","scil":20,"dcil":0,"scid":"bfb334cfe1e452a3ebb09052dff601313c44695e","dcid":""},"raw":{"length":153,"payload_length":106},"send_at_time":2.036242,"frames":[{"frame_type":"ack","ack_delay":0.193,"acked_ranges":[[3,4]]},{"frame_type":"crypto","offset":0,"length":96}]}}
+{"time":5.086442,"name":"transport:data_moved","data":{"stream_id":3,"offset":0,"length":1,"from":"application","to":"transport"}}
+{"time":5.112093,"name":"http:stream_type_set","data":{"owner":"local","stream_id":3,"stream_type":"control"}}
+{"time":5.200617,"name":"http:frame_created","data":{"stream_id":3,"length":18,"frame":{"frame_type":"settings","settings":[{"name":"219154798386147385","value":1660898034740266146}]}}}
+{"time":13.822762,"name":"http:frame_created","data":{"stream_id":0,"length":52,"frame":{"frame_type":"headers","headers":[{"name":":status","value":"200"},{"name":"server","value":"quiche"},{"name":"content-length","value":"676"},{"name":"Content-Type","value":"text/html"},{"name":"priority","value":"u=0, i"},{"name":"h3_stream_id","value":"0"}]}}}
+{"time":5.8963394,"name":"http:frame_parsed","data":{"stream_id":2,"length":31,"frame":{"frame_type":"settings","settings":[{"name":"MAX_FIELD_SECTION_SIZE","value":262144},{"name":"QPACK_MAX_TABLE_CAPACITY","value":65536},{"name":"QPACK_BLOCKED_STREAMS","value":100},{"name":"H3_DATAGRAM","value":1}]}}}
+{"time":12.743206,"name":"http:frame_parsed","data":{"stream_id":0,"length":451,"frame":{"frame_type":"headers","headers":[{"name":":method","value":"GET"},{"name":":authority","value":"vegvisir.dev:4433"},{"name":":scheme","value":"https"},{"name":":path","value":"/index.html"},{"name":"pragma","value":"no-cache"},{"name":"cache-control","value":"no-cache"},{"name":"sec-ch-ua","value":"\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\""},{"name":"sec-ch-ua-mobile","value":"?0"},{"name":"sec-ch-ua-platform","value":"\"Linux\""},{"name":"upgrade-insecure-requests","value":"1"},{"name":"user-agent","value":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36"},{"name":"accept","value":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"},{"name":"sec-fetch-site","value":"none"},{"name":"sec-fetch-mode","value":"navigate"},{"name":"sec-fetch-user","value":"?1"},{"name":"sec-fetch-dest","value":"document"},{"name":"accept-encoding","value":"gzip, deflate, br, zstd"},{"name":"accept-language","value":"en-US,en;q=0.9"},{"name":"priority","value":"u=0, i"}]}}}
+
+{"time":0.081375,"name":"transport:packet_received","data":{"header":{"packet_type":"initial","packet_number":3,"version":"1","scil":0,"dcil":20,"scid":"","dcid":"bfb334cfe1e452a3ebb09052dff601313c44695e"},"raw":{"length":1250,"payload_length":1202},"frames":[{"frame_type":"crypto","offset":1077,"length":289},{"frame_type":"crypto","offset":8,"length":55},{"frame_type":"ping"},{"frame_type":"crypto","offset":63,"length":11},{"frame_type":"crypto","offset":3,"length":5},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"crypto","offset":1071,"length":6},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"padding"},{"frame_type":"crypto","offset":0,"length":3},{"frame_type":"padding"},{"frame_type":"ping"},{"frame_type":"ping"},{"frame_type":"crypto","offset":1366,"length":623}]}}
+{"time":2.036242,"name":"transport:packet_sent","data":{"header":{"packet_type":"handshake","packet_number":0,"version":"1","scil":20,"dcil":0,"scid":"bfb334cfe1e452a3ebb09052dff601313c44695e","dcid":""},"raw":{"length":209,"payload_length":163},"send_at_time":2.036242,"frames":[{"frame_type":"crypto","offset":0,"length":159}]}}
+
+
+
+{"time":2817.2456,
+"name":"transport:packet_sent",
+"data":{
+    "header":{
+            "packet_type":"1RTT",
+            "packet_number":38
+        },
+        "raw":{
+            "length":1350,
+            "payload_length":1332
+        },
+        "send_at_time":2817.2456,
+        "frames":[
+            {
+                "frame_type":"stream",
+                "stream_id":8,
+                "offset":39741,
+                "length":1324
+            }
+        ]
+    }
+}
