@@ -3,8 +3,8 @@ from dataclasses import dataclass
 @dataclass
 class HTTP_reply:
     time: float
-    streamId: int
-    frameType: int
+    stream_id: int
+    frame_type: int
     code: str
     length: int
     priority: int

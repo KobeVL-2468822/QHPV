@@ -10,73 +10,73 @@ from .Filters import *
 
 
 
-def follow_stream(streamId: int, requests: List[HTTP_request], replies: List[HTTP_reply], packetsReceived: List[Packet], packetsSent: List[Packet], receiveStreams: List[Stream], sendStreams: List[Stream]) -> None:
-    requests = getRequestsOfStream(streamId, requests)
-    replies = getRepliesOfStream(streamId, replies)
-    packetsReceived = getPacketsOfStream(streamId, packetsReceived)
-    packetsSent = getPacketsOfStream(streamId, packetsSent)
-    receiveStream = searchStream(streamId, receiveStreams)
-    sendStream = searchStream(streamId, sendStreams)
+def follow_stream(stream_id: int, requests: List[HTTP_request], replies: List[HTTP_reply], packets_received: List[Packet], packets_send: List[Packet], receive_streams: List[Stream], send_streams: List[Stream]) -> None:
+    requests = get_requests_of_stream(stream_id, requests)
+    replies = get_replies_of_stream(stream_id, replies)
+    packets_received = get_packets_of_stream(stream_id, packets_received)
+    packets_send = get_packets_of_stream(stream_id, packets_send)
+    receive_stream = search_stream(stream_id, receive_streams)
+    send_stream = search_stream(stream_id, send_streams)
 
-    print(f"Following stream {streamId}")
-    print(receiveStream)
+    print(f"Following stream {stream_id}")
+    print(receive_stream)
     for req in requests:
         print(req)
-    for packet in packetsReceived:
+    for packet in packets_received:
         print(packet)
-    print(sendStream)
+    print(send_stream)
     for rep in replies:
         print(rep)
-    for packet in packetsSent:
+    for packet in packets_send:
         print(packet)
 
 
 # Compares the received requests with the send replies priories
-def detect_priority_change(receiveStreams: List[Stream], sendStreams: List[Stream], mode: str) -> None:
+def detect_priority_change(receive_streams: List[Stream], send_streams: List[Stream], mode: str) -> None:
     if mode == "SERVER":
-        detect_priority_change_server(receiveStreams, sendStreams)
+        detect_priority_change_server(receive_streams, send_streams)
     elif mode == "CLIENT":
-        detect_priority_change_client(receiveStreams, sendStreams)
+        detect_priority_change_client(receive_streams, send_streams)
     else:
         print(f"Mode not detected: {mode}")
 
 
-def detect_priority_change_server(receiveStreams: List[Stream], sendStreams: List[Stream]):
-    loneStreams: List[Stream] = []
-    for rs in receiveStreams:
-        ssFound = False
-        for ss in sendStreams:
+def detect_priority_change_server(receive_streams: List[Stream], send_streams: List[Stream]):
+    lone_streams: List[Stream] = []
+    for rs in receive_streams:
+        ss_found = False
+        for ss in send_streams:
             if rs.ID == ss.ID:
-                ssFound = True
-                if (len(rs.priorityHistory) > 0 and len(ss.priorityHistory) > 0):
-                    if rs.priorityHistory[0] == ss.priorityHistory[-1]:
-                        print(f"Server kept priority for stream {rs.ID} - {rs.priorityHistory[0]}")
+                ss_found = True
+                if (len(rs.priority_history) > 0 and len(ss.priority_history) > 0):
+                    if rs.priority_history[0] == ss.priority_history[-1]:
+                        print(f"Server kept priority for stream {rs.ID} - {rs.priority_history[0]}")
                     else:
-                        print(f"Server changed priority for Stream {rs.ID} - from {rs.priorityHistory[0]} to {ss.priorityHistory[-1]}")
-                        print(f"PriorityHistory: Receive - {rs.priorityHistory}, Send - {ss.priorityHistory}")
+                        print(f"Server changed priority for Stream {rs.ID} - from {rs.priority_history[0]} to {ss.priority_history[-1]}")
+                        print(f"PriorityHistory: Receive - {rs.priority_history}, Send - {ss.priority_history}")
                 else:
                     print(f"Not enough stream information found for Stream {rs.ID}")
-            if ssFound:
+            if ss_found:
                 break
-        if ssFound == False:
-            loneStreams.append(rs)
+        if ss_found == False:
+            lone_streams.append(rs)
 
-def detect_priority_change_client(receiveStreams: List[Stream], sendStreams: List[Stream]):
-    loneStreams: List[Stream] = []
-    for rs in receiveStreams:
-        ssFound = False
-        for ss in sendStreams:
+def detect_priority_change_client(receive_streams: List[Stream], send_streams: List[Stream]):
+    lone_streams: List[Stream] = []
+    for rs in receive_streams:
+        ss_found = False
+        for ss in send_streams:
             if rs.ID == ss.ID:
-                ssFound = True
-                if (len(rs.priorityHistory) > 0 and len(ss.priorityHistory) > 0):
-                    if ss.priorityHistory[0] == rs.priorityHistory[-1]:
-                        print(f"Server kept priority for stream {rs.ID} - {ss.priorityHistory[0]}")
+                ss_found = True
+                if (len(rs.priority_history) > 0 and len(ss.priority_history) > 0):
+                    if ss.priority_history[0] == rs.priority_history[-1]:
+                        print(f"Server kept priority for stream {rs.ID} - {ss.priority_history[0]}")
                     else:
-                        print(f"Server changed priority for Stream {rs.ID} - from {ss.priorityHistory[0]} to {rs.priorityHistory[-1]}")
-                        print(f"PriorityHistory: Send - {ss.priorityHistory}, Receive - {rs.priorityHistory}")
+                        print(f"Server changed priority for Stream {rs.ID} - from {ss.priority_history[0]} to {rs.priority_history[-1]}")
+                        print(f"PriorityHistory: Send - {ss.priority_history}, Receive - {rs.priority_history}")
                 else:
                     print(f"Not enough stream information found for Stream {rs.ID}")
-            if ssFound:
+            if ss_found:
                 break
-        if ssFound == False:
-            loneStreams.append(rs)
+        if ss_found == False:
+            lone_streams.append(rs)

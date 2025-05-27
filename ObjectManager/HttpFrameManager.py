@@ -2,11 +2,11 @@ from Classes.HTTP_request import HTTP_request
 from Classes.HTTP_reply import HTTP_reply
 from ObjectManager.StreamManager import *
 
-def createHttpRequest(time: float, streamId: int, frameType: str, method: str, path: str, length: int, priority: int, incremental: bool, resource: str) -> HTTP_request:
+def create_http_request(time: float, stream_id: int, frame_type: str, method: str, path: str, length: int, priority: int, incremental: bool, resource: str) -> HTTP_request:
     request = HTTP_request(
         time=time,
-        streamId=streamId,
-        frameType=frameType,
+        stream_id=stream_id,
+        frame_type=frame_type,
         method=method,
         path=path,
         length=length,
@@ -17,11 +17,11 @@ def createHttpRequest(time: float, streamId: int, frameType: str, method: str, p
     return request 
 
 
-def createHttpReply(time: float, streamId: int, frameType: str, code: str, length: int, priority: int, incremental: bool, resource: str) -> HTTP_reply:
+def create_http_reply(time: float, stream_id: int, frame_type: str, code: str, length: int, priority: int, incremental: bool, resource: str) -> HTTP_reply:
     reply = HTTP_reply(
         time=time,
-        streamId=streamId,
-        frameType=frameType,
+        stream_id=stream_id,
+        frame_type=frame_type,
         code=code,
         length=length,
         priority=priority,
@@ -30,9 +30,9 @@ def createHttpReply(time: float, streamId: int, frameType: str, code: str, lengt
         )
     return reply 
 
-def requestIsHeaderFrame(request: HTTP_request)-> bool:
-    return request.frameType == "headers"
+def request_is_header_frame(request: HTTP_request)-> bool:
+    return request.frame_type == "headers"
 
-def replyIsHeaderFrame(reply: HTTP_reply)-> bool:
-    return reply.frameType == "headers"
+def reply_is_header_frame(reply: HTTP_reply)-> bool:
+    return reply.frame_type == "headers"
 

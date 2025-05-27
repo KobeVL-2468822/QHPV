@@ -4,15 +4,15 @@ from typing import List
 from ObjectManager.StreamManager import *
 
 
-def createPacket(time: float, packetType: str, packetNumber: str, length: int, payloadLength: int, totalFrames: int, totalFramesLength: int, direction: int, streams: List[Stream]) -> Packet:
+def create_packet(time: float, packet_type: str, packet_number: str, length: int, payload_length: int, total_frames: int, total_frames_length: int, direction: int, streams: List[Stream]) -> Packet:
     packet = Packet(
         time=time,
-        packetType=packetType,
-        packetNumber=packetNumber,
+        packet_type=packet_type,
+        packet_number=packet_number,
         length=length,
-        payloadLength=payloadLength,
-        totalFrames=totalFrames,
-        totalFramesLength=totalFramesLength,
+        payload_length=payload_length,
+        total_frames=total_frames,
+        total_frames_length=total_frames_length,
         direction=direction,
         streams=streams
     )
