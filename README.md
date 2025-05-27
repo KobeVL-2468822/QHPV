@@ -1,4 +1,4 @@
-# QPTA
+# QHPV
 The QUIC & HTTP/3 Prioritization Visualizer (QHPV) is a straightforward tool designed to read and visualize .qlog- and .sqlog files. It provides an overview of the streams, including any changes in priority. 
 
 Plots to visualize QUIC and HTTP/3 Prioritization:
