@@ -3,12 +3,10 @@ from DataFunctions.Filters import *
 from DataFunctions.AdditionalFunctions import *
 from operator import attrgetter
 from typing import List
-
-
-import matplotlib.pyplot as plt
 from collections import defaultdict
 import math
 
+import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 
@@ -131,8 +129,7 @@ def plot_stream_priority_over_time(receive_streams: List[Stream], start_time: fl
     plt.show(block=False)
 
 
-# Plot a multiplexer of all received packets that contain streams. X -> Time, Y-> Data received at a certain time on (a) certain stream(s)
-def plot_multiplexer(packets_received: List[Packet], start_time: float, normalized_end_time: float):
+def plot_stream_aggregator(packets_received: List[Packet], start_time: float, normalized_end_time: float):
     # Create segments
     segments = []
     for idx, packet in enumerate(packets_received):
@@ -232,7 +229,7 @@ def plot_multiplexer(packets_received: List[Packet], start_time: float, normaliz
     ax.set_xlim(0, normalized_end_time)
     ax.set_xlabel("Time (milliseconds)", fontsize=12)
     ax.set_ylabel("Data Rate (Bytes/ms)", fontsize=12)
-    ax.set_title("Multiplexer - Active Streams", fontsize=14)
+    ax.set_title("Stream Aggregator", fontsize=14)
 
     ax.grid(True, axis='both')
     #ax.set_yticks([])
@@ -242,11 +239,6 @@ def plot_multiplexer(packets_received: List[Packet], start_time: float, normaliz
 
 
 
-
-import matplotlib.pyplot as plt
-from collections import defaultdict
-import math
-from typing import List
 
 def plot_data_per_time_unit(packets_received: List[Packet], start_time: float, normalized_end_time: float, bin_size_ms: float = 100.0):
     # Create bins (time units)

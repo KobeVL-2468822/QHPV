@@ -5,7 +5,7 @@ Plots to visualize QUIC and HTTP/3 Prioritization:
 
 - Cumulative Data Received per Stream Over Time
 - Priority/Urgency History Of Streams
-- Multiplexer-Active Streams
+- Stream Aggregator
 - Aggregated Received Data per Time Unit
 
 This repository represents just a portion of my "Tooling support for analyzing priorities in HTTP/3" research project.

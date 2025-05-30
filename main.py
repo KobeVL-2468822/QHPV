@@ -82,7 +82,7 @@ start_time = packets_received[0].time
 # PLOTS -> matplotlib.pyplot
 plot_stream_data_over_time(packets_received, start_time)
 plot_stream_priority_over_time(receive_streams, start_time, endOfNormalizedCommTimeStamp)
-plot_multiplexer(packets_received, start_time, endOfNormalizedCommTimeStamp)
+plot_stream_aggregator(packets_received, start_time, endOfNormalizedCommTimeStamp)
 plot_data_per_time_unit(packets_received, start_time, endOfNormalizedCommTimeStamp, PLOT_TIME_UNIT_SIZE)
 
 # Extra plot made with plotly.graph_objects (web interface)
