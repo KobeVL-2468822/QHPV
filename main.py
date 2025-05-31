@@ -23,7 +23,13 @@ PLOT_TIME_UNIT_SIZE = 1000
 
 
 # INPUT FILES
-filepath = ".\\logfiles\\paper_demo.qlog"
+filepath = ".\\logfiles\\paper_demo_250mbit_throttle.qlog"
+#filepath = ".\\logfiles\\paper_demo_250mbit_throttle.sqlog"
+#filepath = ".\\logfiles\\paper_demo_250mbit_throttle-alt.qlog"
+
+
+
+#filepath = ".\\logfiles\\paper_demo.qlog"
 #filepath = ".\\logfiles\\paper_demo-alt.qlog"
 #filepath = ".\\logfiles\\paper_demo2.qlog"
 

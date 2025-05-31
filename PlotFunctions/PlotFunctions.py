@@ -7,7 +7,19 @@ from collections import defaultdict
 import math
 
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import plotly.graph_objects as go
+
+
+# COLORS
+#Setup a deterministic color map
+cmap = plt.colormaps.get_cmap('tab20')
+available_colors = [mcolors.to_hex(cmap(i)) for i in range(cmap.N)]
+
+#Assign colors deterministically to stream IDs
+def get_stream_color(stream_id):
+    # Make sure mapping is stable — e.g. via modulo
+    return available_colors[stream_id % len(available_colors)]
 
 
 # Plot a graph of all cumulated data received over the different streams. X-> Time, Y-> Data received (cumulative)
@@ -37,9 +49,9 @@ def plot_stream_data_over_time(packets_received: List[Packet], start_time: float
 
     # Plot every stream and add the stream-ID at the end of the line
     for stream_id, data in stream_data.items():
-        line, = plt.plot(data['times'], data['data'], label=f"Stream {stream_id}")
-        line_color = line.get_color()
-        plt.text(data['times'][-1], data['data'][-1], f" {stream_id}", color=line_color, verticalalignment='center', horizontalalignment='left', fontsize=9)
+        line_color = get_stream_color(stream_id)
+        line, = plt.plot(data['times'], data['data'], label=f"Stream {stream_id}", color=line_color)
+        plt.text(data['times'][-1], data['data'][-1], f" {stream_id}", color=line.get_color(), verticalalignment='center', horizontalalignment='left', fontsize=9)
 
     # Add labels and title
     plt.xlabel('Time (milliseconds)', fontsize=12)
@@ -108,7 +120,8 @@ def plot_stream_priority_over_time(receive_streams: List[Stream], start_time: fl
                 times += [start_time_segment, end_time_segment]
                 prios += [base + offset, base + offset]
 
-            line, = plt.plot(times, prios, drawstyle='steps-post', label=f"Stream {stream.ID}")
+            line_color = get_stream_color(stream.ID)
+            line, = plt.plot(times, prios, drawstyle='steps-post', label=f"Stream {stream.ID}", color=line_color)
 
             plt.text(times[-1], prios[-1], f" {stream.ID}", color=line.get_color(), verticalalignment='center', horizontalalignment='left', fontsize=7)
 
@@ -129,12 +142,13 @@ def plot_stream_priority_over_time(receive_streams: List[Stream], start_time: fl
     plt.show(block=False)
 
 
+
+
 def plot_stream_aggregator(packets_received: List[Packet], start_time: float, normalized_end_time: float):
     # Create segments
     segments = []
     for idx, packet in enumerate(packets_received):
         normalized_time = packet.time - start_time
-
         next_packet_time = normalized_end_time
         if idx + 1 < len(packets_received):
             next_packet_time = packets_received[idx + 1].time - start_time
@@ -149,14 +163,7 @@ def plot_stream_aggregator(packets_received: List[Packet], start_time: float, no
             "streams": dict(streams_in_packet)
         })
 
-    fig, ax = plt.subplots(figsize=(15, 7))
-    cmap = plt.colormaps.get_cmap('tab20')
-    available_colors = [cmap(i) for i in range(cmap.N)]
-    stream_colors = {}
-    stream_color_idx = 0
-
-
-    # Group segments together based on streams
+    # Group segments
     grouped_segments = []
     if segments:
         current_group = {
@@ -167,22 +174,33 @@ def plot_stream_aggregator(packets_received: List[Packet], start_time: float, no
 
         for seg in segments[1:]:
             if set(seg["streams"].keys()) == set(current_group["streams"].keys()):
-                # Same stream(s) -> don't close group yet
                 current_group["end"] = seg["end"]
                 for sid, bytes_amount in seg["streams"].items():
                     current_group["streams"][sid] += bytes_amount
             else:
-                # Close group and start a new group
                 grouped_segments.append(current_group)
                 current_group = {
                     "start": seg["start"],
                     "end": seg["end"],
                     "streams": seg["streams"].copy()
                 }
+        grouped_segments.append(current_group)
 
-        grouped_segments.append(current_group)  # Add last group to list of groups
+    stream_last_seen = {}
+    for seg in segments:
+        for stream_id in seg["streams"].keys():
+            stream_last_seen[stream_id] = seg["start"]
 
-    # Draw the grouped segments
+    for group in grouped_segments:
+        group_streams = group["streams"].keys()
+        latest_time = max(stream_last_seen[sid] for sid in group_streams)
+        group["end"] = min(group["end"], latest_time)
+
+    # Plot
+    fig, ax = plt.subplots(figsize=(15, 7))
+    stream_colors = {}
+    stream_color_idx = 0
+
     for group in grouped_segments:
         start = group["start"]
         end = group["end"]
@@ -192,18 +210,16 @@ def plot_stream_aggregator(packets_received: List[Packet], start_time: float, no
             continue
 
         streams = group["streams"]
-
         bottom = 0
         for stream_id, total_bytes in streams.items():
-            data_rate = total_bytes / duration  # bytes/ms
+            data_rate = total_bytes / duration
 
             if stream_id not in stream_colors:
-                stream_colors[stream_id] = available_colors[stream_color_idx % len(available_colors)]
+                stream_colors[stream_id] = get_stream_color(stream_id)
                 stream_color_idx += 1
 
             color = stream_colors[stream_id]
 
-            # Plot bar
             ax.broken_barh(
                 [(start, duration)],
                 (bottom, data_rate),
@@ -211,7 +227,6 @@ def plot_stream_aggregator(packets_received: List[Packet], start_time: float, no
                 edgecolors=color,
             )
 
-            # Only write the stream id one time above a group so the screen doesnt get cluttered with stream ids
             if data_rate > 0:
                 ax.text(
                     start + duration / 2,
@@ -225,17 +240,15 @@ def plot_stream_aggregator(packets_received: List[Packet], start_time: float, no
 
             bottom += data_rate
 
-    # Add labels and title
     ax.set_xlim(0, normalized_end_time)
     ax.set_xlabel("Time (milliseconds)", fontsize=12)
     ax.set_ylabel("Data Rate (Bytes/ms)", fontsize=12)
     ax.set_title("Stream Aggregator", fontsize=14)
-
     ax.grid(True, axis='both')
-    #ax.set_yticks([])
-
     plt.tight_layout()
     plt.show(block=False)
+
+
 
 
 
@@ -251,8 +264,6 @@ def plot_data_per_time_unit(packets_received: List[Packet], start_time: float, n
             bins[bin_index][stream.ID] += stream.length
 
     fig, ax = plt.subplots(figsize=(15, 7))
-    cmap = plt.colormaps.get_cmap('tab20')
-    available_colors = [cmap(i) for i in range(cmap.N)]
     stream_colors = {}
     stream_color_idx = 0
 
@@ -270,7 +281,7 @@ def plot_data_per_time_unit(packets_received: List[Packet], start_time: float, n
 
         for stream_id, size in sorted_streams:
             if stream_id not in stream_colors:
-                stream_colors[stream_id] = available_colors[stream_color_idx % len(available_colors)]
+                stream_colors[stream_id] = get_stream_color(stream_id)
                 stream_color_idx += 1
             color = stream_colors[stream_id]
 
@@ -357,15 +368,14 @@ def plot_data_per_time_unit_interactive(
     # Build Plotly figure
     fig = go.Figure()
 
-    colors = ['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A',
-              '#19D3F3', '#FF6692', '#B6E880', '#FF97FF', '#FECB52']
+    #colors = available_colors
 
     for i, sid in enumerate(all_streams):
         fig.add_trace(go.Bar(
             name=f"Stream {sid}",
             x=stream_traces[sid]['x'],
             y=stream_traces[sid]['y'],
-            marker_color=colors[i % len(colors)],
+            marker_color=get_stream_color(sid),
             hovertemplate=f"Stream {sid}<br>Time: %{{x}} ms<br>Bytes: %{{y}}<extra></extra>",
         ))
 
